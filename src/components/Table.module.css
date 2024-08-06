@@ -1,0 +1,22 @@
+.table {
+  margin: 15px;
+  border: 1px solid #000;
+  background-color: #ccc;
+}
+
+th {
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #000;
+  background-color: #999;
+}
+
+td {
+  text-align: left;
+  padding: 5px;
+  border: 1px solid #000;
+}
+
+tr:nth-child(even) {
+  background-color: #eee;
+}
