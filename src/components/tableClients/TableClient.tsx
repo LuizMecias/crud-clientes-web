@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Client } from '../types/Client';
-import { TableProps } from '../types/TableProps';
-import FormModal from './Modal';
-import { deleteClient } from '../services/ClientServices';
-import style from './Table.module.css';
+import { Client } from '../../types/Client';
+import { TableProps } from '../../types/TableProps';
+import FormModal from './ModalClient';
+import { deleteClient } from '../../services/ClientServices';
+import style from '../../style/Table.module.css';
+import { Link } from 'react-router-dom';
 
-const Table: React.FC<TableProps> = ({ clients, loadClients }) => {
+const TableClient: React.FC<TableProps> = ({ clients, loadClients }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [editClient, setEditClient] = useState<Client | undefined>(undefined);
 
@@ -45,6 +46,7 @@ const Table: React.FC<TableProps> = ({ clients, loadClients }) => {
             <th>CPF</th>
             <th>Telefone</th>
             <th>E-mail</th>
+            <th>Endereço</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -55,6 +57,11 @@ const Table: React.FC<TableProps> = ({ clients, loadClients }) => {
               <td>{client.cpf}</td>
               <td>{client.phone || ''}</td>
               <td>{client.email || ''}</td>
+              <td>
+                <Link to={`/address/${client.cpf}`}>
+                  <button>Endereço</button>
+                </Link>
+              </td>
               <td>
                 <button onClick={() => handleEdit(client)}>Editar</button>
                 <button onClick={() => handleDelete(client.cpf)}>
@@ -78,4 +85,4 @@ const Table: React.FC<TableProps> = ({ clients, loadClients }) => {
   );
 };
 
-export default Table;
+export default TableClient;

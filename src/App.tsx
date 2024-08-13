@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Table from './components/Table';
-import FormModal from './components/Modal';
-import { Client } from './types/Client';
+import Table from './components/tableClients/TableClient';
+import FormModal from './components/tableClients/ModalClient';
 import { getClients, searchClient } from './services/ClientServices';
-import './App.css';
+import { Client } from './types/Client';
+import style from './style/Global.module.css';
 
 const App: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -56,7 +56,7 @@ const App: React.FC = () => {
       <header>
         <h1>Gerenciamento de Clientes da FATECOINS</h1>
       </header>
-      <div className="buttons">
+      <div className={style.buttons}>
         <button onClick={handleModal}>Adicionar</button>
         <button onClick={handleOrder}>A - Z</button>
         <input
@@ -75,7 +75,7 @@ const App: React.FC = () => {
           onClose={handleModal}
         />
       </div>
-      <div className="table">
+      <div className={style.table}>
         <Table clients={clients} loadClients={loadClients} />
       </div>
     </div>

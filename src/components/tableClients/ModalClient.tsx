@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Modal, Form } from 'react-bootstrap';
 import InputMask from 'react-input-mask';
-import { ModalProps } from '../types/ModalProps';
-import { addClient, updateClient } from '../services/ClientServices';
-import style from './Modal.module.css';
-import { Client } from '../types/Client';
+import { ModalProps } from '../../types/ModalProps';
+import { addClient, updateClient } from '../../services/ClientServices';
+import style from '../../style/Modal.module.css';
+import { Client } from '../../types/Client';
 
-const FormModal: React.FC<ModalProps> = ({
+const FormModalClient: React.FC<ModalProps> = ({
   show = false,
   client,
   isEditing,
@@ -148,4 +148,4 @@ const FormModal: React.FC<ModalProps> = ({
   );
 };
 
-export default FormModal;
+export default FormModalClient;
