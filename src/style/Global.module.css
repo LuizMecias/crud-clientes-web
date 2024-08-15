@@ -5,11 +5,29 @@ body {
 }
 
 header {
+  display: flex;
+  flex-direction: row;
   text-align: center;
   font-weight: bold;
   background-color: #49045ee5;
   padding: 20px;
   color: #ffff00;
+  position: relative;
+}
+
+.link {
+  display: flex;
+  max-height: 25px;
+  position: absolute;
+}
+.title {
+  text-align: right;
+  position: absolute;
+  right: 0;
+}
+
+.subtitle {
+  padding-top: 25px;
 }
 
 .buttons {

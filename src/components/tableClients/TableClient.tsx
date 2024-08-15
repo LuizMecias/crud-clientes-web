@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Client } from '../../types/Client';
-import { TableProps } from '../../types/TableProps';
-import FormModal from './ModalClient';
-import { deleteClient } from '../../services/ClientServices';
-import style from '../../style/Table.module.css';
 import { Link } from 'react-router-dom';
+import { TablePropsClient } from '../../types/TablePropsClient';
+import { Client } from '../../types/Client';
+import { deleteClient } from '../../services/ClientServices';
+import FormModal from './ModalClient';
+import style from '../../style/Table.module.css';
 
-const TableClient: React.FC<TableProps> = ({ clients, loadClients }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [editClient, setEditClient] = useState<Client | undefined>(undefined);
+const TableClient: React.FC<TablePropsClient> = ({ clients, loadClients }) => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [editClient, setEditClient] = useState<Client | null>(null);
 
   useEffect(() => {
     loadClients();
@@ -19,13 +19,13 @@ const TableClient: React.FC<TableProps> = ({ clients, loadClients }) => {
     setEditClient(client);
   };
 
-  const handleDelete = async (cpf: string) => {
+  const handleDelete = async (id: number) => {
     try {
       const confirm = window.confirm(
         'Tem certeza que deseja excluir o cliente?'
       );
       if (confirm) {
-        await deleteClient(cpf);
+        await deleteClient(id);
         loadClients();
       }
     } catch (error) {
@@ -51,22 +51,20 @@ const TableClient: React.FC<TableProps> = ({ clients, loadClients }) => {
           </tr>
         </thead>
         <tbody>
-          {clients.map((client: Client, index) => (
-            <tr key={index}>
+          {clients.map((client: Client, id) => (
+            <tr key={id}>
               <td>{client.name || ''}</td>
-              <td>{client.cpf}</td>
+              <td>{client.cpf || ''}</td>
               <td>{client.phone || ''}</td>
               <td>{client.email || ''}</td>
               <td>
-                <Link to={`/address/${client.cpf}`}>
+                <Link to={`/addresses`} state={{ client: client }}>
                   <button>Endereço</button>
                 </Link>
               </td>
               <td>
                 <button onClick={() => handleEdit(client)}>Editar</button>
-                <button onClick={() => handleDelete(client.cpf)}>
-                  Excluir
-                </button>
+                <button onClick={() => handleDelete(client.id)}>Excluir</button>
               </td>
             </tr>
           ))}

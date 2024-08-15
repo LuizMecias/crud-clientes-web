@@ -1,8 +1,6 @@
-import { Client } from './Client';
-
-export interface Adress {
+export interface Address {
   id: number;
-  clienteCpf: Client['cpf'];
+  clientId: number;
   cep: string;
   street: string;
   number: string;

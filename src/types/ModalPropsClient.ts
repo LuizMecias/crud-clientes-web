@@ -1,8 +1,8 @@
 import { Client } from './Client';
 
-export interface ModalProps {
+export interface ModalPropsClient {
   show: boolean;
-  client?: Client;
+  client?: Client | null;
   isEditing: boolean;
   loadClients: () => void;
   onClose: () => void;

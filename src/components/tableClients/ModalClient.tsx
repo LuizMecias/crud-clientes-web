@@ -1,37 +1,39 @@
 import React, { useState } from 'react';
 import { Modal, Form } from 'react-bootstrap';
 import InputMask from 'react-input-mask';
-import { ModalProps } from '../../types/ModalProps';
-import { addClient, updateClient } from '../../services/ClientServices';
+import { ModalPropsClient } from '../../types/ModalPropsClient';
+import { registerClient, updateClient } from '../../services/ClientServices';
 import style from '../../style/Modal.module.css';
 import { Client } from '../../types/Client';
 
-const FormModalClient: React.FC<ModalProps> = ({
+const FormModalClient: React.FC<ModalPropsClient> = ({
   show = false,
   client,
   isEditing,
   loadClients,
   onClose,
 }) => {
-  const [name, setName] = useState(client?.name || '');
-  const [cpf, setCPF] = useState(client?.cpf || '');
-  const [phone, setPhone] = useState(client?.phone || '');
-  const [email, setEmail] = useState(client?.email || '');
-  const [erros, setErros] = useState<Partial<Client>>({});
+  const id: number = client?.id || 0;
+  const [name, setName] = useState<string>(client?.name || '');
+  const [cpf, setCPF] = useState<string>(client?.cpf || '');
+  const [phone, setPhone] = useState<string>(client?.phone || '');
+  const [email, setEmail] = useState<string>(client?.email || '');
+  const [errors, setErrors] = useState<Partial<Client>>({});
 
   const handleSubmit = async () => {
     try {
       const data = {
-        name: name,
-        cpf: cpf,
-        phone: phone,
-        email: email,
+        id,
+        name,
+        cpf,
+        phone,
+        email,
       };
 
       if (isEditing) {
-        await updateClient(client?.cpf || '', data);
+        await updateClient(id, data);
       } else {
-        await addClient(data);
+        await registerClient(data);
       }
 
       setName('');
@@ -45,38 +47,38 @@ const FormModalClient: React.FC<ModalProps> = ({
     }
   };
 
-  const validarCampos = () => {
-    const novosErros: Partial<Client> = {};
+  const handleValidate = () => {
+    const novosErrors: Partial<Client> = {};
 
     // Validação do campo nome
     if (name.trim() === '') {
-      novosErros.name = 'Por favor, digite o seu nome.';
+      novosErrors.name = 'Por favor, digite o seu nome.';
     }
 
     // Validação do campo cpf
     if (cpf.trim() === '') {
-      novosErros.cpf = 'Por favor, digite o seu CPF.';
+      novosErrors.cpf = 'Por favor, digite o seu CPF.';
     } else if (!/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf)) {
-      novosErros.cpf = 'Por favor, digite um CPF válido.';
+      novosErrors.cpf = 'Por favor, digite um CPF válido.';
     }
 
     // Validação do campo telefone
     if (phone.trim() === '') {
-      novosErros.phone = 'Por favor, digite o seu telefone.';
+      novosErrors.phone = 'Por favor, digite o seu telefone.';
     } else if (!/^\(\d{2}\) \d{5}-\d{4}$/.test(phone)) {
-      novosErros.phone = 'Por favor, digite um telefone válido.';
+      novosErrors.phone = 'Por favor, digite um telefone válido.';
     }
 
     // Validação do campo email
     if (email.trim() === '') {
-      novosErros.email = 'Por favor, digite o seu email.';
+      novosErrors.email = 'Por favor, digite o seu email.';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      novosErros.email = 'Por favor, digite um email válido.';
+      novosErrors.email = 'Por favor, digite um email válido.';
     }
 
-    setErros(novosErros);
+    setErrors(novosErrors);
 
-    if (Object.keys(novosErros).length > 0) {
+    if (Object.keys(novosErrors).length > 0) {
       return;
     } else {
       handleSubmit();
@@ -87,7 +89,9 @@ const FormModalClient: React.FC<ModalProps> = ({
     <div className={`${style.background} ${show ? style.show : ''}`}>
       <Modal show={show} onHide={onClose} className={style.modal}>
         <Modal.Header>
-          <Modal.Title className={style.title}>Cadastro de Cliente</Modal.Title>
+          <Modal.Title className={style.title}>
+            {isEditing ? 'Editar Cliente' : 'Cadastrar Cliente'}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={(e) => e.preventDefault()}>
@@ -98,7 +102,7 @@ const FormModalClient: React.FC<ModalProps> = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
-              {erros.name && <span>{erros.name}</span>}
+              {errors.name && <span>{errors.name}</span>}
             </Form.Group>
             <Form.Group controlId="formCPF" className={style.row}>
               <Form.Label>CPF</Form.Label>
@@ -107,9 +111,8 @@ const FormModalClient: React.FC<ModalProps> = ({
                 value={cpf}
                 onChange={(e) => setCPF(e.target.value)}
                 placeholder="000.000.000-00"
-                disabled={!!isEditing}
               />
-              {erros.cpf && <span>{erros.cpf}</span>}
+              {errors.cpf && <span>{errors.cpf}</span>}
             </Form.Group>
             <Form.Group controlId="formPhone" className={style.row}>
               <Form.Label>Telefone</Form.Label>
@@ -119,7 +122,7 @@ const FormModalClient: React.FC<ModalProps> = ({
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="(00) 00000-0000"
               />
-              {erros.phone && <span>{erros.phone}</span>}
+              {errors.phone && <span>{errors.phone}</span>}
             </Form.Group>
             <Form.Group controlId="formEmail" className={style.row}>
               <Form.Label>E-mail</Form.Label>
@@ -128,14 +131,14 @@ const FormModalClient: React.FC<ModalProps> = ({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {erros.email && <span>{erros.email}</span>}
+              {errors.email && <span>{errors.email}</span>}
             </Form.Group>
             <div className={style.buttons}>
               <button onClick={onClose}>Cancelar</button>
               <button
                 onClick={(event) => {
                   event.preventDefault();
-                  validarCampos();
+                  handleValidate();
                 }}
               >
                 Salvar

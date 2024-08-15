@@ -20,6 +20,10 @@
   background-color: #999999;
   padding: 2rem;
   border-radius: 8px;
+  overflow-y: auto;
+  max-height: 90vh;
+  scrollbar-color: #333 #666;
+  scrollbar-width: thin;
 }
 
 .title {

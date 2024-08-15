@@ -1,54 +1,40 @@
 import React, { useState } from 'react';
 import { Modal, Form } from 'react-bootstrap';
-import { ModalPropsAdress } from '../../types/ModalPropsAdress';
+import { useLocation } from 'react-router-dom';
+import { ModalPropsAddress } from '../../types/ModalPropsAddress';
 import style from '../../style/Modal.module.css';
-import { Adress } from '../../types/Adress';
-import { addAdress, updateAdress } from '../../services/AdressService';
-import { useParams } from 'react-router-dom';
+import { Address } from '../../types/Address';
+import { registerAddress, updateAddress } from '../../services/AddressService';
 
-/**
- * FormModalAdress component.
- *
- * @param {ModalPropsAdress} props - The component props.
- * @param {boolean} props.show - Flag indicating if the modal is shown.
- * @param {Adress | undefined} props.adress - The adress object.
- * @param {boolean} props.isEditing - Flag indicating if the adress is being edited.
- * @param {() => Promise<void>} props.loadAdresses - Function to load adresses.
- * @param {() => void} props.onClose - Function to close the modal.
- * @returns {React.ReactElement} The rendered component.
- */
-const FormModalAdress: React.FC<ModalPropsAdress> = ({
+const FormModalAddress: React.FC<ModalPropsAddress> = ({
   show = false,
-  adress,
+  address,
   isEditing,
-  loadAdresses,
+  loadAddresses,
   onClose,
 }): React.ReactElement => {
-  const clienteCpf = useParams().cpf || '';
-  const id: number = adress?.id || 0;
-  const [cep, setCep] = useState<string>(adress?.cep || '');
-  const [street, setStreet] = useState<string>(adress?.street || '');
-  const [number, setNumber] = useState<string>(adress?.number || '');
+  const id: number = address?.id || 0;
+  const location = useLocation();
+  const client = location.state.client;
+  const clientId: number = client.id;
+  const [cep, setCep] = useState<string>(address?.cep || '');
+  const [street, setStreet] = useState<string>(address?.street || '');
+  const [number, setNumber] = useState<string>(address?.number || '');
   const [complement, setComplement] = useState<string>(
-    adress?.complement || ''
+    address?.complement || ''
   );
-  const [district, setDistrict] = useState<string>(adress?.district || '');
-  const [city, setCity] = useState<string>(adress?.city || '');
-  const [state, setState] = useState<string>(adress?.state || '');
-  const [country, setCountry] = useState<string>(adress?.country || '');
-  const [reference, setReference] = useState<string>(adress?.reference || '');
-  const [erros, setErros] = useState<Partial<Adress>>({});
+  const [district, setDistrict] = useState<string>(address?.district || '');
+  const [city, setCity] = useState<string>(address?.city || '');
+  const [state, setState] = useState<string>(address?.state || '');
+  const [country, setCountry] = useState<string>(address?.country || '');
+  const [reference, setReference] = useState<string>(address?.reference || '');
+  const [erros, setErros] = useState<Partial<Address>>({});
 
-  /**
-   * Handles the form submission.
-   *
-   * @returns {Promise<void>} A promise that resolves when the submission is complete.
-   */
   const handleSubmit = async (): Promise<void> => {
     try {
-      const data: Adress = {
+      const data: Address = {
         id,
-        clienteCpf,
+        clientId,
         cep,
         street,
         number,
@@ -61,9 +47,9 @@ const FormModalAdress: React.FC<ModalPropsAdress> = ({
       };
 
       if (isEditing) {
-        await updateAdress(id, data);
+        await updateAddress(id, data);
       } else {
-        await addAdress(data);
+        await registerAddress(data);
       }
 
       setCep('');
@@ -75,20 +61,15 @@ const FormModalAdress: React.FC<ModalPropsAdress> = ({
       setState('');
       setCountry('');
       setReference('');
-      loadAdresses();
+      loadAddresses();
       onClose();
     } catch (error) {
       console.error(error);
     }
   };
 
-  /**
-   * Validates the form fields.
-   *
-   * @returns {void}
-   */
   const validarCampos = (): void => {
-    const novosErros: Partial<Adress> = {};
+    const novosErros: Partial<Address> = {};
 
     // Validation of the cep field
     if (cep.trim() === '') {
@@ -149,7 +130,7 @@ const FormModalAdress: React.FC<ModalPropsAdress> = ({
       <Modal show={show} onHide={onClose} className={style.modal}>
         <Modal.Header>
           <Modal.Title className={style.title}>
-            Cadastro de Endereço
+            {isEditing ? 'Editar Endereço' : 'Cadastrar Endereço'}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -253,4 +234,4 @@ const FormModalAdress: React.FC<ModalPropsAdress> = ({
   );
 };
 
-export default FormModalAdress;
+export default FormModalAddress;
