@@ -47,6 +47,7 @@ const TableClient: React.FC<TablePropsClient> = ({ clients, loadClients }) => {
             <th>Telefone</th>
             <th>E-mail</th>
             <th>Endereço</th>
+            <th>Dependentes</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -60,6 +61,11 @@ const TableClient: React.FC<TablePropsClient> = ({ clients, loadClients }) => {
               <td>
                 <Link to={`/addresses`} state={{ client: client }}>
                   <button>Endereço</button>
+                </Link>
+              </td>
+              <td>
+                <Link to={`/dependents`} state={{ client: client }}>
+                  <button>Dependentes</button>
                 </Link>
               </td>
               <td>

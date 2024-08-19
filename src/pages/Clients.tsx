@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Table from '../components/tableClients/TableClient';
-import FormModal from '../components/tableClients/ModalClient';
+import Table from '../components/Clients/TableClient';
+import FormModal from '../components/Clients/ModalClient';
 import { listClients, searchClient } from '../services/ClientServices';
 import { Client } from '../types/Client';
 import style from '../style/Global.module.css';

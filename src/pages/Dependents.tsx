@@ -1,30 +1,30 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import TableAddress from '../components/Addresses/TableAddress';
-import FormModalAddress from '../components/Addresses/ModalAddress';
-import { listAddresses, searchAddress } from '../services/AddressService';
-import { Address } from '../types/Address';
+import FormModalDependent from '../components/Dependents/ModalDependent';
+import TableDependent from '../components/Dependents/TableDependent';
+import { listDependents, searchDependent } from '../services/DependentService';
+import { Dependent } from '../types/Dependent';
 import style from '../style/Global.module.css';
 
-const AddressesPage: React.FC = () => {
+const DependentsPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [dependents, setDependents] = useState<Dependent[]>([]);
   const [searchInput, setSearchInput] = useState<string>('');
   const [isAscending, setIsAscending] = useState<boolean>(true);
   const location = useLocation();
   const client = location.state.client;
 
-  const loadAddresses = async () => {
+  const loadDependents = async () => {
     try {
-      const response = await listAddresses(client.id);
+      const response = await listDependents(client.id);
       if (response) {
-        setAddresses(response);
+        setDependents(response);
       } else {
-        console.error('Failed to load addresses');
+        console.error('Failed to load dependents');
       }
     } catch (error) {
-      console.error('An error occurred while loading addresses:', error);
+      console.error('An error occurred while loading dependents:', error);
     }
   };
 
@@ -33,26 +33,24 @@ const AddressesPage: React.FC = () => {
   };
 
   const handleOrder = () => {
-    const orderedAddresses = [...addresses].sort((a, b) =>
-      isAscending
-        ? a.street.localeCompare(b.street)
-        : b.street.localeCompare(a.street)
+    const orderedDependents = [...dependents].sort((a, b) =>
+      isAscending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
     );
-    setAddresses(orderedAddresses);
+    setDependents(orderedDependents);
     setIsAscending(!isAscending);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await searchAddress(client.id, searchInput);
+        const response = await searchDependent(client.id, searchInput);
         if (response) {
-          setAddresses(response);
+          setDependents(response);
         } else {
-          console.error('Failed to load addresses');
+          console.error('Failed to load dependents');
         }
       } catch (error) {
-        console.error('An error occurred while loading addresses:', error);
+        console.error('An error occurred while loading dependents:', error);
       }
     };
 
@@ -65,7 +63,7 @@ const AddressesPage: React.FC = () => {
         <Link to="/" className={style.link}>
           <button>Voltar</button>
         </Link>
-        <h1 className={style.title}>Endereços cadastrados</h1>
+        <h1 className={style.title}>Dependentes cadastrados</h1>
         <h2 className={style.subtitle}>Cliente: {client.name}</h2>
       </header>
       <div className={style.buttons}>
@@ -79,19 +77,22 @@ const AddressesPage: React.FC = () => {
         />
       </div>
       <div className="modal">
-        <FormModalAddress
+        <FormModalDependent
           show={isVisible}
-          address={null}
+          dependent={null}
           isEditing={false}
-          loadAddresses={loadAddresses}
+          loadDependents={loadDependents}
           onClose={handleModal}
         />
       </div>
       <div className={style.table}>
-        <TableAddress addresses={addresses} loadAddresses={loadAddresses} />
+        <TableDependent
+          dependents={dependents}
+          loadDependents={loadDependents}
+        />
       </div>
     </div>
   );
 };
 
-export default AddressesPage;
+export default DependentsPage;
