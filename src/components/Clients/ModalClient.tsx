@@ -16,17 +16,15 @@ const FormModalClient: React.FC<ModalPropsClient> = ({
   const id: number = client?.id || 0;
   const [name, setName] = useState<string>(client?.name || '');
   const [cpf, setCPF] = useState<string>(client?.cpf || '');
-  const [phone, setPhone] = useState<string>(client?.phone || '');
   const [email, setEmail] = useState<string>(client?.email || '');
   const [errors, setErrors] = useState<Partial<Client>>({});
 
   const handleSubmit = async () => {
     try {
-      const data = {
+      const data: Client = {
         id,
         name,
         cpf,
-        phone,
         email,
       };
 
@@ -38,7 +36,6 @@ const FormModalClient: React.FC<ModalPropsClient> = ({
 
       setName('');
       setCPF('');
-      setPhone('');
       setEmail('');
       loadClients();
       onClose();
@@ -60,13 +57,6 @@ const FormModalClient: React.FC<ModalPropsClient> = ({
       novosErrors.cpf = 'Por favor, digite o seu CPF.';
     } else if (!/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf)) {
       novosErrors.cpf = 'Por favor, digite um CPF válido.';
-    }
-
-    // Validação do campo telefone
-    if (phone.trim() === '') {
-      novosErrors.phone = 'Por favor, digite o seu telefone.';
-    } else if (!/^\(\d{2}\) \d{5}-\d{4}$/.test(phone)) {
-      novosErrors.phone = 'Por favor, digite um telefone válido.';
     }
 
     // Validação do campo email

@@ -48,9 +48,11 @@ const FormModalPhone: React.FC<ModalPropsPhone> = ({
   const handleValidate = (): void => {
     const novosErrors: Partial<Phone> = {};
 
-    // Validation of the cep field
+    // Validação do campo telefone
     if (phoneNumber.trim() === '') {
       novosErrors.phoneNumber = 'Por favor, digite o seu telefone.';
+    } else if (!/^\(\d{2}\) \d{5}-\d{4}$/.test(phoneNumber)) {
+      novosErrors.phoneNumber = 'Por favor, digite um telefone válido.';
     }
 
     setErrors(novosErrors);
