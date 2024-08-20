@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TablePropsClient } from '../../types/TablePropsClient';
-import { Client } from '../../types/Client';
+import { TablePropsClient } from '../../types/Client/TablePropsClient';
+import { Client } from '../../types/Client/Client';
 import { deleteClient } from '../../services/ClientServices';
 import FormModal from './ModalClient';
 import style from '../../style/Table.module.css';
@@ -44,8 +44,8 @@ const TableClient: React.FC<TablePropsClient> = ({ clients, loadClients }) => {
           <tr>
             <th>Nome</th>
             <th>CPF</th>
-            <th>Telefone</th>
             <th>E-mail</th>
+            <th>Telefone</th>
             <th>Endereço</th>
             <th>Dependentes</th>
             <th>Ações</th>
@@ -56,8 +56,12 @@ const TableClient: React.FC<TablePropsClient> = ({ clients, loadClients }) => {
             <tr key={id}>
               <td>{client.name || ''}</td>
               <td>{client.cpf || ''}</td>
-              <td>{client.phone || ''}</td>
               <td>{client.email || ''}</td>
+              <td>
+                <Link to={`/phones`} state={{ client: client }}>
+                  <button>Telefones</button>
+                </Link>
+              </td>
               <td>
                 <Link to={`/addresses`} state={{ client: client }}>
                   <button>Endereço</button>

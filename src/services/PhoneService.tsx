@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { Client } from '../types/Client/Client';
+import { Phone } from '../types/Phone/Phone';
 
-const API_URL = 'http://10.0.0.7:3000/clients';
+const API_URL = 'http://10.0.0.7:3000/phones';
 
-const listClients = async () => {
+const listPhones = async (id: number) => {
   try {
-    const response = await axios.get(`${API_URL}/list`);
+    const response = await axios.get(`${API_URL}/list/${id}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -13,7 +13,7 @@ const listClients = async () => {
   }
 };
 
-const registerClient = async (data: Client) => {
+const registerPhone = async (data: Phone) => {
   try {
     const response = await axios.post(`${API_URL}/register`, data);
     return response.data;
@@ -23,7 +23,7 @@ const registerClient = async (data: Client) => {
   }
 };
 
-const updateClient = async (id: number, data: Client) => {
+const updatePhone = async (id: number, data: Phone) => {
   try {
     const response = await axios.put(`${API_URL}/update/${id}`, data);
     return response.data;
@@ -33,7 +33,7 @@ const updateClient = async (id: number, data: Client) => {
   }
 };
 
-const deleteClient = async (id: number) => {
+const deletePhone = async (id: number) => {
   try {
     await axios.delete(`${API_URL}/delete/${id}`);
   } catch (error) {
@@ -42,9 +42,9 @@ const deleteClient = async (id: number) => {
   }
 };
 
-const searchClient = async (searchInput: string) => {
+const searchPhone = async (id: number, searchInput: string) => {
   try {
-    const response = await axios.get(`${API_URL}/search`, {
+    const response = await axios.get(`${API_URL}/search/${id}`, {
       params: {
         searchInput,
       },
@@ -56,10 +56,4 @@ const searchClient = async (searchInput: string) => {
   }
 };
 
-export {
-  listClients,
-  registerClient,
-  updateClient,
-  deleteClient,
-  searchClient,
-};
+export { listPhones, registerPhone, updatePhone, deletePhone, searchPhone };

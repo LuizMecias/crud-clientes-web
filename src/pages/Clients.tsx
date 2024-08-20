@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Table from '../components/Clients/TableClient';
 import FormModal from '../components/Clients/ModalClient';
 import { listClients, searchClient } from '../services/ClientServices';
-import { Client } from '../types/Client';
+import { Client } from '../types/Client/Client';
 import style from '../style/Global.module.css';
 
 const ClientsPage: React.FC = () => {

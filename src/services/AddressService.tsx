@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Address } from '../types/Address';
+import { Address } from '../types/Address/Address';
 
 const API_URL = 'http://10.0.0.7:3000/addresses';
 

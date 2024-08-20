@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import FormModalDependent from './ModalDependent';
 import style from '../../style/Table.module.css';
-import { TablePropsDependent } from '../../types/TablePropsDependent';
-import { Dependent } from '../../types/Dependent';
+import { TablePropsDependent } from '../../types/Dependent/TablePropsDependent';
+import { Dependent } from '../../types/Dependent/Dependent';
 import { deleteDependent } from '../../services/DependentService';
 
 const TableDependent: React.FC<TablePropsDependent> = ({

@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import TableAddress from '../components/Addresses/TableAddress';
 import FormModalAddress from '../components/Addresses/ModalAddress';
 import { listAddresses, searchAddress } from '../services/AddressService';
-import { Address } from '../types/Address';
+import { Address } from '../types/Address/Address';
 import style from '../style/Global.module.css';
 
 const AddressesPage: React.FC = () => {

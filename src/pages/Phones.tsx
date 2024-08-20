@@ -1,30 +1,30 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import FormModalDependent from '../components/Dependents/ModalDependent';
-import TableDependent from '../components/Dependents/TableDependent';
-import { listDependents, searchDependent } from '../services/DependentService';
-import { Dependent } from '../types/Dependent/Dependent';
+import FormModalPhone from '../components/Phones/ModalPhone';
+import TablePhone from '../components/Phones/TablePhone';
+import { listPhones, searchPhone } from '../services/PhoneService';
+import { Phone } from '../types/Phone/Phone';
 import style from '../style/Global.module.css';
 
-const DependentsPage: React.FC = () => {
+const PhonesPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [dependents, setDependents] = useState<Dependent[]>([]);
+  const [phones, setPhones] = useState<Phone[]>([]);
   const [searchInput, setSearchInput] = useState<string>('');
   const [isAscending, setIsAscending] = useState<boolean>(true);
   const location = useLocation();
   const client = location.state.client;
 
-  const loadDependents = async () => {
+  const loadPhones = async () => {
     try {
-      const response = await listDependents(client.id);
+      const response = await listPhones(client.id);
       if (response) {
-        setDependents(response);
+        setPhones(response);
       } else {
-        console.error('Failed to load dependents');
+        console.error('Failed to load phones');
       }
     } catch (error) {
-      console.error('An error occurred while loading dependents:', error);
+      console.error('An error occurred while loading phones:', error);
     }
   };
 
@@ -33,24 +33,26 @@ const DependentsPage: React.FC = () => {
   };
 
   const handleOrder = () => {
-    const orderedDependents = [...dependents].sort((a, b) =>
-      isAscending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+    const orderedDependents = [...phones].sort((a, b) =>
+      isAscending
+        ? a.phoneNumber.localeCompare(b.phoneNumber)
+        : b.phoneNumber.localeCompare(a.phoneNumber)
     );
-    setDependents(orderedDependents);
+    setPhones(orderedDependents);
     setIsAscending(!isAscending);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await searchDependent(client.id, searchInput);
+        const response = await searchPhone(client.id, searchInput);
         if (response) {
-          setDependents(response);
+          setPhones(response);
         } else {
-          console.error('Failed to load dependents');
+          console.error('Failed to load phones');
         }
       } catch (error) {
-        console.error('An error occurred while loading dependents:', error);
+        console.error('An error occurred while loading phones:', error);
       }
     };
 
@@ -63,7 +65,7 @@ const DependentsPage: React.FC = () => {
         <Link to="/" className={style.link}>
           <button>Voltar</button>
         </Link>
-        <h1 className={style.title}>Dependentes cadastrados</h1>
+        <h1 className={style.title}>Telefones cadastrados</h1>
         <h2 className={style.subtitle}>Cliente: {client.name}</h2>
       </header>
       <div className={style.buttons}>
@@ -77,22 +79,19 @@ const DependentsPage: React.FC = () => {
         />
       </div>
       <div className="modal">
-        <FormModalDependent
+        <FormModalPhone
           show={isVisible}
-          dependent={null}
+          phone={null}
           isEditing={false}
-          loadDependents={loadDependents}
+          loadPhones={loadPhones}
           onClose={handleModal}
         />
       </div>
       <div className={style.table}>
-        <TableDependent
-          dependents={dependents}
-          loadDependents={loadDependents}
-        />
+        <TablePhone phones={phones} loadPhones={loadPhones} />
       </div>
     </div>
   );
 };
 
-export default DependentsPage;
+export default PhonesPage;

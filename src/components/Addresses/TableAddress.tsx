@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import FormModalAddress from './ModalAddress';
 import style from '../../style/Table.module.css';
-import { TablePropsAddress } from '../../types/TablePropsAddress';
-import { Address } from '../../types/Address';
+import { TablePropsAddress } from '../../types/Address/TablePropsAddress';
+import { Address } from '../../types/Address/Address';
 import { deleteAddress } from '../../services/AddressService';
 
 const TableAddress: React.FC<TablePropsAddress> = ({

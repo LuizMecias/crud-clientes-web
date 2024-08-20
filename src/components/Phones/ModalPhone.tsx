@@ -1,44 +1,44 @@
 import React, { useState } from 'react';
 import { Modal, Form } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
-import { ModalPropsDependent } from '../../types/Dependent/ModalPropsDependent';
+import { ModalPropsPhone } from '../../types/Phone/ModalPropsPhone';
 import style from '../../style/Modal.module.css';
-import { Dependent } from '../../types/Dependent/Dependent';
-import {
-  registerDependent,
-  updateDependent,
-} from '../../services/DependentService';
+import { Phone } from '../../types/Phone/Phone';
+import { registerPhone, updatePhone } from '../../services/PhoneService';
+import ReactInputMask from 'react-input-mask';
 
-const FormModalDependent: React.FC<ModalPropsDependent> = ({
+const FormModalPhone: React.FC<ModalPropsPhone> = ({
   show = false,
-  dependent,
+  phone,
   isEditing,
-  loadDependents,
+  loadPhones,
   onClose,
 }): React.ReactElement => {
-  const id: number = dependent?.id || 0;
+  const id: number = phone?.id || 0;
   const location = useLocation();
   const client = location.state.client;
   const clientId: number = client.id;
-  const [name, setName] = useState<string>(dependent?.name || '');
-  const [errors, setErrors] = useState<Partial<Dependent>>({});
+  const [phoneNumber, setPhoneNumber] = useState<string>(
+    phone?.phoneNumber || ''
+  );
+  const [errors, setErrors] = useState<Partial<Phone>>({});
 
   const handleSubmit = async (): Promise<void> => {
     try {
-      const data: Dependent = {
+      const data: Phone = {
         id,
         clientId,
-        name,
+        phoneNumber,
       };
 
       if (isEditing) {
-        await updateDependent(id, data);
+        await updatePhone(id, data);
       } else {
-        await registerDependent(data);
+        await registerPhone(data);
       }
 
-      setName('');
-      loadDependents();
+      setPhoneNumber('');
+      loadPhones();
       onClose();
     } catch (error) {
       console.error(error);
@@ -46,11 +46,11 @@ const FormModalDependent: React.FC<ModalPropsDependent> = ({
   };
 
   const handleValidate = (): void => {
-    const novosErrors: Partial<Dependent> = {};
+    const novosErrors: Partial<Phone> = {};
 
     // Validation of the cep field
-    if (name.trim() === '') {
-      novosErrors.name = 'Por favor, digite o nome do dependente.';
+    if (phoneNumber.trim() === '') {
+      novosErrors.phoneNumber = 'Por favor, digite o seu telefone.';
     }
 
     setErrors(novosErrors);
@@ -67,19 +67,20 @@ const FormModalDependent: React.FC<ModalPropsDependent> = ({
       <Modal show={show} onHide={onClose} className={style.modal}>
         <Modal.Header>
           <Modal.Title className={style.title}>
-            {isEditing ? 'Editar Dependente' : 'Cadastrar Dependente'}
+            {isEditing ? 'Editar telefone' : 'Cadastrar telefone'}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={(e) => e.preventDefault()}>
-            <Form.Group controlId="formName" className={style.row}>
-              <Form.Label>Nome</Form.Label>
-              <Form.Control
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+            <Form.Group controlId="formPhone" className={style.row}>
+              <Form.Label>Telefone</Form.Label>
+              <ReactInputMask
+                mask="(99) 99999-9999"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="(00) 00000-0000"
               />
-              {errors.name && <span>{errors.name}</span>}
+              {errors.phoneNumber && <span>{errors.phoneNumber}</span>}
             </Form.Group>
             <div className={style.buttons}>
               <button onClick={onClose}>Cancelar</button>
@@ -99,4 +100,4 @@ const FormModalDependent: React.FC<ModalPropsDependent> = ({
   );
 };
 
-export default FormModalDependent;
+export default FormModalPhone;

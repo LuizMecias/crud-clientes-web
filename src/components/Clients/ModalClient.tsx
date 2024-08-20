@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Modal, Form } from 'react-bootstrap';
 import InputMask from 'react-input-mask';
-import { ModalPropsClient } from '../../types/ModalPropsClient';
+import { ModalPropsClient } from '../../types/Client/ModalPropsClient';
 import { registerClient, updateClient } from '../../services/ClientServices';
 import style from '../../style/Modal.module.css';
-import { Client } from '../../types/Client';
+import { Client } from '../../types/Client/Client';
 
 const FormModalClient: React.FC<ModalPropsClient> = ({
   show = false,
@@ -113,16 +113,6 @@ const FormModalClient: React.FC<ModalPropsClient> = ({
                 placeholder="000.000.000-00"
               />
               {errors.cpf && <span>{errors.cpf}</span>}
-            </Form.Group>
-            <Form.Group controlId="formPhone" className={style.row}>
-              <Form.Label>Telefone</Form.Label>
-              <InputMask
-                mask="(99) 99999-9999"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="(00) 00000-0000"
-              />
-              {errors.phone && <span>{errors.phone}</span>}
             </Form.Group>
             <Form.Group controlId="formEmail" className={style.row}>
               <Form.Label>E-mail</Form.Label>

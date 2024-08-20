@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Modal, Form } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
-import { ModalPropsAddress } from '../../types/ModalPropsAddress';
+import { ModalPropsAddress } from '../../types/Address/ModalPropsAddress';
 import style from '../../style/Modal.module.css';
-import { Address } from '../../types/Address';
+import { Address } from '../../types/Address/Address';
 import { registerAddress, updateAddress } from '../../services/AddressService';
 
 const FormModalAddress: React.FC<ModalPropsAddress> = ({
