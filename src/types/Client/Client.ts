@@ -3,4 +3,8 @@ export interface Client {
   name: string;
   cpf: string;
   email: string;
+  phones?: [];
+  addresses?: [];
+  dependents?: [];
+  orders?: [];
 }

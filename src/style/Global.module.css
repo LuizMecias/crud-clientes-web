@@ -13,13 +13,24 @@ header {
   padding: 20px;
   color: #ffff00;
   position: relative;
+  height: 100px;
 }
 
-.link {
+.menu {
   display: flex;
-  max-height: 25px;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 70px;
+  gap: 15px;
   position: absolute;
+  right: 25px;
+  font-size: 25px;
 }
+
+.active {
+  color: #ffff00;
+}
+
 .title {
   text-align: right;
   position: absolute;
@@ -41,4 +52,10 @@ header {
 .table {
   display: flex;
   justify-content: center;
+}
+
+.pdf {
+  height: 20px;
+  margin-top: auto;
+  background-color: #ff3344;
 }

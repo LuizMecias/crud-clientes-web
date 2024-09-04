@@ -3,12 +3,20 @@
   border: 1px solid #000;
   background-color: #ccc;
 }
+.tableReport {
+  margin: 15px;
+  border: 1px solid #000;
+  background-color: #ccc;
+  width: 98%;
+}
 
 th {
   text-align: center;
   padding: 5px;
   border: 1px solid #000;
   background-color: #999;
+  position: sticky; /* Mantém os cabeçalhos visíveis ao rolar */
+  top: 0;
 }
 
 td {
@@ -19,4 +27,19 @@ td {
 
 tr:nth-child(even) {
   background-color: #eee;
+}
+
+.phoneCell,
+.addressCell,
+.dependentCell {
+  display: inline-block;
+  width: 100%; /* Faz com que cada item ocupe uma linha */
+  box-sizing: border-box; /* Inclui o padding e a borda no total width */
+  padding: 3px;
+  border: 1px solid #000;
+}
+
+.lastRow td {
+  font-weight: bold;
+  background-color: #999;
 }

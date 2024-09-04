@@ -4,6 +4,7 @@ import FormModal from '../components/Clients/ModalClient';
 import { listClients, searchClient } from '../services/ClientServices';
 import { Client } from '../types/Client/Client';
 import style from '../style/Global.module.css';
+import { Link } from 'react-router-dom';
 
 const ClientsPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -57,6 +58,15 @@ const ClientsPage: React.FC = () => {
     <div className="page">
       <header>
         <h1>Gerenciamento de Clientes da FATECOINS</h1>
+        <nav className={style.menu}>
+          <Link className={style.active} to={`/`}>
+            Clientes
+          </Link>{' '}
+          | <Link to={`/reports`}>Relatório</Link> |{' '}
+          <Link to={`/shopping`} state={{ clients: clients }}>
+            Compras
+          </Link>
+        </nav>
       </header>
       <div className={style.buttons}>
         <button onClick={handleModal}>Adicionar</button>
