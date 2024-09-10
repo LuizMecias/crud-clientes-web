@@ -97,17 +97,21 @@ const ReportsPage: React.FC = () => {
                   ))}
               </td>
               <td>
-                {/* {client.orders &&
-                  client.orders.map((order: OrderProduct) => (
+                {client.orders &&
+                  client.orders.map((order: Order) => (
                     <div key={order.id}>
-                      {order.products &&
-                        order.products.map((product: Product) => (
-                          <div>
-                            {product.name || ''} - R$ {product.price || ''}
-                          </div>
-                        ))}
+                      {order.orderProducts &&
+                        order.orderProducts.map(
+                          (orderProduct: OrderProduct) => (
+                            <div key={orderProduct.id}>
+                              {orderProduct.quantity || 0} X{' '}
+                              {orderProduct.product.name || ''} - R$
+                              {orderProduct.product.price || ''}
+                            </div>
+                          )
+                        )}
                     </div>
-                  ))} */}
+                  ))}
               </td>
             </tr>
           ))}
