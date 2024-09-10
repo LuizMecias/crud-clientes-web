@@ -33,7 +33,7 @@ const TableShopping: React.FC<TablePropsShopping> = ({
             </tr>
           ))}
           <tr className={style.lastRow}>
-            <td>Total</td>
+            <td>TOTAL</td>
             <td>{totalQuantity}</td>
             <td>R$ {totalPrice}</td>
           </tr>

@@ -1,0 +1,133 @@
+.body {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  gap: 50px;
+}
+
+.selectsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.containerClient {
+  background-color: #49045ee5;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.selectClient {
+  width: 500px;
+  max-height: 115px;
+  /* Cor de fundo */
+  background-color: #f2f2f2;
+  /* Cor do texto */
+  color: #333;
+  /* Tamanho da fonte */
+  font-size: 16px;
+  /* Espaçamento entre as opções */
+  padding: 10px;
+  /* Borda */
+  border: 1px solid #ccc;
+  /* Arredondamento das bordas */
+  border-radius: 5px;
+  /* Sombra */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.containerProductButton {
+  margin-top: 15px;
+  background-color: #49045ee5;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.divider {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selectProduct {
+  width: 500px;
+  max-height: 115px;
+  /* Cor de fundo */
+  background-color: #f2f2f2;
+  /* Cor do texto */
+  color: #333;
+  /* Tamanho da fonte */
+  font-size: 16px;
+  /* Espaçamento entre as opções */
+  padding: 10px;
+  /* Borda */
+  border: 1px solid #ccc;
+  /* Arredondamento das bordas */
+  border-radius: 5px;
+  /* Sombra */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.containerQuantity {
+  margin-top: 15px;
+  background-color: #49045ee5;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputQuantity {
+  width: 150px;
+  height: 25px;
+  /* Cor de fundo */
+  background-color: #f2f2f2;
+  /* Cor do texto */
+  color: #333;
+  /* Tamanho da fonte */
+  font-size: 16px;
+  /* Espaçamento entre as opções */
+  padding: 10px;
+  /* Borda */
+  border: 1px solid #ccc;
+  /* Arredondamento das bordas */
+  border-radius: 5px;
+  /* Sombra */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.selectButton {
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.cartContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #49045ee5;
+  padding: 10px;
+  border-radius: 5px;
+  height: 530px;
+  width: 400px;
+  align-items: center;
+}
+
+.cartTable {
+  height: 380px;
+  overflow-y: auto;
+}
+
+.cartButton {
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+  margin-top: 15px;
+}

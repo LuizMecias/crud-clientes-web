@@ -142,7 +142,6 @@ const FormModalShopping: React.FC<ModalPropsShopping> = ({ show, onClose }) => {
           show={isVisible}
           product={null}
           isEditing={false}
-          loadProducts={loadProducts}
           onClose={handleModal}
         />
       </div>

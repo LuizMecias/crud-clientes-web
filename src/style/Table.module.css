@@ -3,6 +3,7 @@
   border: 1px solid #000;
   background-color: #ccc;
 }
+
 .tableReport {
   margin: 15px;
   border: 1px solid #000;
@@ -42,4 +43,6 @@ tr:nth-child(even) {
 .lastRow td {
   font-weight: bold;
   background-color: #999;
+  position: sticky;
+  bottom: 0;
 }

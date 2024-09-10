@@ -44,24 +44,16 @@ const TableProduct: React.FC<TablePropsProduct> = ({
       <table className={style.table}>
         <thead>
           <tr>
-            <th></th>
             <th>Produto</th>
             <th>Preço</th>
-            <th>Quantidade</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           {products.map((product) => (
             <tr key={product.id}>
-              <td>
-                <input type="checkbox" value={product.id} />
-              </td>
               <td>{product.name}</td>
               <td>R$ {product.price}</td>
-              <td>
-                <input type="number" min="0" />
-              </td>
               <td>
                 <button onClick={() => handleEdit(product)}>Editar</button>
                 <button onClick={() => handleDelete(product.id)}>
@@ -77,7 +69,6 @@ const TableProduct: React.FC<TablePropsProduct> = ({
           show={isVisible}
           product={editProduct}
           isEditing={true}
-          loadProducts={loadProducts}
           onClose={handleModal}
         />
       )}

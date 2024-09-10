@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import style from '../style/Global.module.css';
 import { Link, useLocation } from 'react-router-dom';
-import TableShopping from '../components/shopping/TableShopping';
+import style from '../style/Global.module.css';
+import specificStyle from '../style/Shopping.module.css';
 import { listProducts } from '../services/ProductService';
 import { Product } from '../types/order_product/product/Product';
-import FormModalProduct from '../components/product/ModalProduct';
-import { Order } from '../types/order_product/order/Order';
 import { Client } from '../types/Client/Client';
-import { listOrders, registerOrder } from '../services/ShoppingService';
+import TableShopping from '../components/shopping/TableShopping';
+import FormModalProduct from '../components/product/ModalProduct';
+import {
+  listOrders,
+  registerOrder,
+  registerOrderProduct,
+} from '../services/ShoppingService';
+import { Order } from '../types/order_product/order/Order';
 
 const ShoppingPage: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [products, setProducts] = useState<Product[]>([]);
-  const [order, setOrder] = useState<Order[]>([]);
-  const [selectedProductId, setSelectedProductId] = useState<number | ''>('');
+  const [selectedProductId, setSelectedProductId] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
   const [items, setItems] = useState<Product[]>([]);
   const location = useLocation();
   const clients = location.state?.clients || [];
-  const [selectedClientId, setSelectedClientId] = useState<number | ''>('');
+  const [selectedClientId, setSelectedClientId] = useState<number>(0);
   const [totalQuantity, setTotalQuantity] = React.useState(0);
   const [totalPrice, setTotalPrice] = React.useState(0);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const loadProducts = async () => {
     try {
@@ -39,18 +44,18 @@ const ShoppingPage: React.FC = () => {
     try {
       const response = await listOrders();
       if (response) {
-        setOrder(response);
+        setOrders(response);
       } else {
-        console.error('Failed to load products');
+        console.error('Failed to load orders');
       }
     } catch (error) {
-      console.error('An error occurred while loading products:', error);
+      console.error('An error occurred while loading orders:', error);
     }
   };
 
   useEffect(() => {
-    loadOrders();
     loadProducts();
+    loadOrders();
   }, []);
 
   const handleModal = () => {
@@ -69,28 +74,33 @@ const ShoppingPage: React.FC = () => {
     });
   };
 
-  const handleTotalChange = (totalQuantity: number, totalPrice: number) => {
-    setTotalQuantity(totalQuantity);
-    setTotalPrice(totalPrice);
-  };
-
   const handleSubmit = async () => {
-    const order = {
-      id: 0,
-      client: clients.find(
-        (client: { id: string | number }) => client.id === selectedClientId
-      ),
-      products: items,
-      totalQuantity: totalQuantity,
-      totalPrice: totalPrice,
-    };
+    try {
+      const dataOrderProduct = items.map((item) => ({
+        product: item,
+        quantity: item.quantity,
+        price: item.price,
+      }));
+      const dataOrder = {
+        client: clients.find(
+          (client: { id: number }) => client.id === selectedClientId
+        ),
+        orderProducts: dataOrderProduct,
+      };
 
-    setSelectedProductId('');
-    setSelectedClientId('');
-    setQuantity(1);
-    setItems([]);
-    setOrder([order]);
-    registerOrder(order);
+      console.log(dataOrderProduct);
+
+      await registerOrder(dataOrder);
+
+      setItems([]);
+      setQuantity(1);
+      setSelectedProductId(0);
+      setSelectedClientId(0);
+      setTotalQuantity(0);
+      setTotalPrice(0);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -99,64 +109,94 @@ const ShoppingPage: React.FC = () => {
         <h1>Carrinho de compras</h1>
         <nav className={style.menu}>
           <Link to={`/`}>Clientes</Link> |{' '}
-          <Link to={`/reports`} state={{ order: order }}>
-            Relatório
-          </Link>{' '}
-          |{' '}
+          <Link to={`/reports`}>Relatório</Link> |{' '}
           <Link className={style.active} to={`/shopping`}>
             Compras
           </Link>
         </nav>
       </header>
-      <div className={style.buttons}>
-        <button onClick={handleModal}>Cadastrar produto</button>
-        <select
-          value={selectedProductId}
-          onChange={(e) => setSelectedProductId(parseInt(e.target.value))}
-        >
-          <option>Selecione um produto</option>
-          {products.map((product) => (
-            <option key={product.id} value={product.id}>
-              {product.name} - R$ {product.price}
-            </option>
-          ))}
-        </select>
-        <input
-          type="number"
-          min="1"
-          value={quantity}
-          onChange={(e) => setQuantity(parseInt(e.target.value))}
-        />
-        <button onClick={handleTable}>Adicionar ao carrinho</button>
-      </div>
-      <div className="modal">
-        <FormModalProduct
-          show={isVisible}
-          product={null}
-          isEditing={false}
-          loadProducts={loadProducts}
-          onClose={handleModal}
-        />
-      </div>
-      <div className={style.table}>
-        <TableShopping items={items} onTotalChange={handleTotalChange} />
-      </div>
-      <div className={style.client}>
-        CLiente:
-        <select
-          value={selectedClientId}
-          onChange={(e) => setSelectedClientId(parseInt(e.target.value))}
-        >
-          <option>Selecione um cliente</option>
-          {clients.map((client: Client) => (
-            <option key={client.id} value={client.id}>
-              {client.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className={style.buttons}>
-        <button onClick={handleSubmit}>Finalizar compra</button>
+      <div className={specificStyle.body}>
+        <div className={specificStyle.selectsContainer}>
+          <div className={specificStyle.containerClient}>
+            <h2>Cliente</h2>
+            <select
+              value={selectedClientId}
+              onChange={(e) => setSelectedClientId(parseInt(e.target.value))}
+              className={specificStyle.selectClient}
+              size={5}
+            >
+              {clients.map((client: Client) => (
+                <option key={client.id} value={client.id}>
+                  {client.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className={specificStyle.containerProductButton}>
+            <div className={specificStyle.divider}>
+              <h2>Produtos</h2>
+              <button
+                onClick={handleModal}
+                className={specificStyle.selectButton}
+              >
+                Cadastrar prodtudo
+              </button>
+              <FormModalProduct
+                show={isVisible}
+                product={null}
+                isEditing={false}
+                onClose={handleModal}
+              />
+            </div>
+            <select
+              value={selectedProductId}
+              onChange={(e) => setSelectedProductId(parseInt(e.target.value))}
+              className={specificStyle.selectProduct}
+              size={5}
+            >
+              {products.map((product) => (
+                <option key={product.id} value={product.id}>
+                  {product.name} - R$ {product.price}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className={specificStyle.containerQuantity}>
+            <h2>Quantidade</h2>
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => setQuantity(parseInt(e.target.value))}
+              className={specificStyle.inputQuantity}
+            />
+            <button
+              onClick={handleTable}
+              className={specificStyle.selectButton}
+            >
+              Adicionar ao carrinho
+            </button>
+          </div>
+        </div>
+
+        <div className={specificStyle.cartContainer}>
+          <h2>Carrinho</h2>
+          <div className={specificStyle.cartTable}>
+            <TableShopping
+              items={items}
+              onTotalChange={(totalQuantity, totalPrice) => {
+                setTotalQuantity(totalQuantity);
+                setTotalPrice(totalPrice);
+              }}
+            />
+          </div>
+
+          <button onClick={handleSubmit} className={specificStyle.cartButton}>
+            Finalizar compra
+          </button>
+        </div>
       </div>
     </div>
   );

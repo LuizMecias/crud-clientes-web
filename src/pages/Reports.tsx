@@ -8,13 +8,11 @@ import { Dependent } from '../types/Dependent/Dependent';
 import style from '../style/Global.module.css';
 import styleTable from '../style/Table.module.css';
 import { Product } from '../types/order_product/product/Product';
-import { Order } from '../types/order_product/order/Order';
-import { listOrders } from '../services/ShoppingService';
+import { Order, OrderProduct } from '../types/order_product/order/Order';
 // import generatePdf from '../components/Pdf/GeneratePdf';
 
 const ReportsPage: React.FC = () => {
   const [clients, setClients] = useState<Client[]>([]);
-  const [order, setOrder] = useState<Order[]>([]);
 
   useEffect(() => {
     const loadClients = async () => {
@@ -30,20 +28,6 @@ const ReportsPage: React.FC = () => {
       }
     };
 
-    const loadOrders = async () => {
-      try {
-        const response = await listOrders();
-        if (response) {
-          setOrder(response);
-        } else {
-          console.error('Failed to load products');
-        }
-      } catch (error) {
-        console.error('An error occurred while loading products:', error);
-      }
-    };
-
-    loadOrders();
     loadClients();
   }, []);
 
@@ -113,8 +97,8 @@ const ReportsPage: React.FC = () => {
                   ))}
               </td>
               <td>
-                {client.orders &&
-                  client.orders.map((order: Order) => (
+                {/* {client.orders &&
+                  client.orders.map((order: OrderProduct) => (
                     <div key={order.id}>
                       {order.products &&
                         order.products.map((product: Product) => (
@@ -123,7 +107,7 @@ const ReportsPage: React.FC = () => {
                           </div>
                         ))}
                     </div>
-                  ))}
+                  ))} */}
               </td>
             </tr>
           ))}
